@@ -8,7 +8,6 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Vibrant Gradient Background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -23,7 +22,6 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
 
-          // 2. Main Content
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -31,7 +29,6 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   const Spacer(),
 
-                  // 3. Icon with a soft glow effect
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -47,7 +44,6 @@ class WelcomeScreen extends StatelessWidget {
 
                   const SizedBox(height: 40),
 
-                  // 4. Headline with better styling
                   const Text(
                     "Indoor Sports\nBooking",
                     textAlign: TextAlign.center,
@@ -59,8 +55,6 @@ class WelcomeScreen extends StatelessWidget {
                       height: 1.2,
                     ),
                   ),
-
-                  const SizedBox(height: 16),
 
                   // 5. Subtitle
                   Text(
@@ -74,8 +68,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
 
                   const Spacer(),
-
-                  // 6. Styled Button
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
