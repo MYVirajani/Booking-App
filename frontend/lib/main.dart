@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/presentation/blocs/auth/auth_bloc.dart';
+import 'package:frontend/presentation/views/auth/login_screen.dart';
 
-import  'presentation/views/get_started/welcome_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return BlocProvider(
+      create: (_) => AuthBloc(),
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const WelcomeScreen(),
+        home: LoginScreen(),
+      ),
     );
   }
 }
