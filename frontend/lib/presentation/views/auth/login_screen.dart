@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/presentation/views/auth/signup_screen.dart';
 import '../../widgets/custom_ui_components.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -29,8 +30,12 @@ class LoginScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(30),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Login", style: TextStyle(color: Colors.white, fontSize: 28)),
+                  const Text("Login", style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,)),
 
                   const SizedBox(height: 30),
 
@@ -55,6 +60,31 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       print("Logging in with: ${emailController.text}");
                     },
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      GestureDetector(
+                        onTap: () =>
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignupScreen())),
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Colors.lightGreenAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
