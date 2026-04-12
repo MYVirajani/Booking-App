@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../search/explore_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF031518), 
+      backgroundColor: const Color(0xFF031518),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,18 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text(
-                        "Good morning",
-                        style: TextStyle(color: Colors.white54, fontSize: 16),
-                      ),
-                      Text(
-                        "Rain Sport Playground",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text("Good morning", style: TextStyle(color: Colors.white54, fontSize: 16)),
+                      Text("Rain Sport Playground", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   const CircleAvatar(
@@ -80,24 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Text(
-                    "FEATURED VENUE",
-                    style: TextStyle(
-                      color: Color(0xFFB9F6CA),
-                      letterSpacing: 1.5,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    "Book Your\nCourt Today",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 42,
-                      fontWeight: FontWeight.w900,
-                      height: 1.1,
-                    ),
-                  ),
+                  Text("FEATURED VENUE", style: TextStyle(color: Color(0xFFB9F6CA), letterSpacing: 1.5, fontWeight: FontWeight.w600, fontSize: 12)),
+                  Text("Book Your\nCourt Today", style: TextStyle(color: Colors.white, fontSize: 42, fontWeight: FontWeight.w900, height: 1.1)),
                 ],
               ),
             ),
@@ -122,12 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Select a Category",
-                    style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
+                  const Text("Select a Category", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ExploreScreen()));
+                    },
                     child: const Text("View all →", style: TextStyle(color: Color(0xFFB9F6CA))),
                   ),
                 ],
@@ -139,9 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  _buildCategoryCard(context, "Cricket Net", Icons.sports_cricket),
-                  _buildCategoryCard(context, "Futsal Pitch", Icons.sports_soccer),
-                  _buildCategoryCard(context, "Badminton Court", Icons.sports_tennis),
+                  _buildCategoryCard(context, "Cricket Net", "Lane 01 & 02 available", "LKR 1,500/hr", Icons.sports_cricket_rounded),
+                  _buildCategoryCard(context, "Futsal Pitch", "Indoor High-grip turf", "LKR 3,500/hr", Icons.sports_soccer_rounded),
+                  _buildCategoryCard(context, "Badminton", "Pro Mat Surfaces", "LKR 1,200/hr", Icons.sports_tennis_rounded),
                 ],
               ),
             ),
@@ -149,8 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
-
       bottomNavigationBar: _buildCustomBottomBar(),
       extendBody: true,
     );
@@ -160,10 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(20),
-        ),
+        decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
             Text(value, style: const TextStyle(color: Color(0xFFB9F6CA), fontSize: 24, fontWeight: FontWeight.bold)),
@@ -175,39 +144,52 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context, String title, IconData icon) {
+  
+  Widget _buildCategoryCard(BuildContext context, String title, String subtitle, String price, IconData icon) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFFB9F6CA), size: 28),
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: const Color(0xFFB9F6CA).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: const Color(0xFFB9F6CA), size: 28),
+          ),
           const SizedBox(width: 16),
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
-          const Spacer(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(subtitle, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                const SizedBox(height: 4),
+                Text(price, style: const TextStyle(color: Color(0xFFB9F6CA), fontWeight: FontWeight.bold, fontSize: 14)),
+              ],
+            ),
+          ),
           const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 14),
         ],
       ),
     );
   }
 
-
   Widget _buildCustomBottomBar() {
     return Container(
       height: 90,
       decoration: BoxDecoration(
         color: const Color(0xFF051C1F),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
-        ),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, spreadRadius: 5),
-        ],
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, spreadRadius: 5)],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -224,7 +206,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildNavItem(int index, String label, IconData icon) {
     bool isSelected = _selectedIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+
+        if (index == 0) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+        if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ExploreScreen()),
+          );
+        }
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -234,7 +233,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: 4,
               width: 4,
-              decoration: const BoxDecoration(color: Color(0xFFB9F6CA), shape: BoxShape.circle),
+              decoration: const BoxDecoration(
+                color: Color(0xFFB9F6CA),
+                shape: BoxShape.circle,
+              ),
             ),
           const SizedBox(height: 4),
           Text(
