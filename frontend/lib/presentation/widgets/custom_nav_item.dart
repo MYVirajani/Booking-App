@@ -34,7 +34,7 @@ class CustomNavItem extends StatelessWidget {
               size: 28,
             ),
             const SizedBox(height: 4),
-           
+
             Opacity(
               opacity: isSelected ? 1.0 : 0.0,
               child: Container(
