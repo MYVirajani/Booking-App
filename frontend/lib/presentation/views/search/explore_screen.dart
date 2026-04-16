@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../widgets/category_card.dart';
+import '../../widgets/main_nav_bar.dart';
 
-class ExploreScreen extends StatefulWidget {
+class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
-
-  @override
-  State<ExploreScreen> createState() => _ExploreScreenState();
-}
-
-class _ExploreScreenState extends State<ExploreScreen> {
-  int _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +12,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       extendBody: true,
       body: Column(
         children: [
-
+          // 1. HEADER WITH BACK BUTTON
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 50, 24, 10),
             child: Row(
@@ -38,7 +33,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ),
 
-
+          // 2. SEARCH BAR
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             child: Container(
@@ -60,156 +55,61 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ),
           ),
 
-
+          // 3. FACILITY LIST (Using reusable CategoryCard)
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(24),
               children: [
-                _buildFacilityCard(
-                    "Cricket Net - Lane 01",
-                    "Bowling machine available",
-                    "LKR 1,500/hr",
-                    Icons.sports_cricket_rounded
+                CategoryCard(
+                  title: "Cricket Net - Lane 01",
+                  subtitle: "Bowling machine available",
+                  price: "LKR 1,500/hr",
+                  icon: Icons.sports_cricket_rounded,
+                  onTap: () {},
                 ),
-                _buildFacilityCard(
-                    "Cricket Net - Lane 02",
-                    "Spacious practice area",
-                    "LKR 1,500/hr",
-                    Icons.sports_cricket_outlined
+                CategoryCard(
+                  title: "Cricket Net - Lane 02",
+                  subtitle: "Spacious practice area",
+                  price: "LKR 1,500/hr",
+                  icon: Icons.sports_cricket_outlined,
+                  onTap: () {},
                 ),
-                _buildFacilityCard(
-                    "Futsal Court",
-                    "High-grip indoor turf",
-                    "LKR 3,500/hr",
-                    Icons.sports_soccer_rounded
+                CategoryCard(
+                  title: "Futsal Court",
+                  subtitle: "High-grip indoor turf",
+                  price: "LKR 3,500/hr",
+                  icon: Icons.sports_soccer_rounded,
+                  onTap: () {},
                 ),
-                _buildFacilityCard(
-                    "Badminton Court A",
-                    "Professional mat surface",
-                    "LKR 1,200/hr",
-                    Icons.sports_tennis_rounded
+                CategoryCard(
+                  title: "Badminton Court A",
+                  subtitle: "Professional mat surface",
+                  price: "LKR 1,200/hr",
+                  icon: Icons.sports_tennis_rounded,
+                  onTap: () {},
                 ),
-                _buildFacilityCard(
-                    "Badminton Court B",
-                    "Professional mat surface",
-                    "LKR 1,200/hr",
-                    Icons.sports_tennis_outlined
+                CategoryCard(
+                  title: "Badminton Court B",
+                  subtitle: "Professional mat surface",
+                  price: "LKR 1,200/hr",
+                  icon: Icons.sports_tennis_outlined,
+                  onTap: () {},
                 ),
-                _buildFacilityCard(
-                    "Table Tennis",
-                    "Double-table zone",
-                    "LKR 800/hr",
-                    Icons.sports_kabaddi_rounded
+                CategoryCard(
+                  title: "Table Tennis",
+                  subtitle: "Double-table zone",
+                  price: "LKR 800/hr",
+                  icon: Icons.sports_kabaddi_rounded,
+                  onTap: () {},
                 ),
-                const SizedBox(height: 100),
+                const SizedBox(height: 120), // Padding for the floating nav bar
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: _buildCustomBottomBar(),
-    );
-  }
 
-
-  Widget _buildFacilityCard(String title, String desc, String price, IconData sportIcon) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
-      ),
-      child: Row(
-        children: [
-
-          Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: const Color(0xFFB9F6CA).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(sportIcon, color: const Color(0xFFB9F6CA), size: 28),
-          ),
-          const SizedBox(width: 16),
-          // Info Section
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  desc,
-                  style: const TextStyle(color: Colors.white38, fontSize: 12),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  price,
-                  style: const TextStyle(color: Color(0xFFB9F6CA), fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 14),
-        ],
-      ),
-    );
-  }
-
-
-  Widget _buildCustomBottomBar() {
-    return Container(
-      height: 90,
-      decoration: const BoxDecoration(
-        color: Color(0xFF051C1F),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(0, "HOME", Icons.home_rounded),
-          _buildNavItem(1, "BOOKINGS", Icons.calendar_month_rounded),
-          _buildNavItem(2, "EXPLORE", Icons.search_rounded),
-          _buildNavItem(3, "PROFILE", Icons.person_rounded),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(int index, String label, IconData icon) {
-    bool isSelected = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedIndex = index),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: isSelected ? Colors.white : Colors.white38, size: 28),
-          const SizedBox(height: 4),
-          if (isSelected)
-            Container(
-              height: 4,
-              width: 4,
-              decoration: const BoxDecoration(color: Color(0xFFB9F6CA), shape: BoxShape.circle),
-            ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? const Color(0xFFB9F6CA) : Colors.white38,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
+      bottomNavigationBar: const MainNavBar(currentIndex: 2),
     );
   }
 }
