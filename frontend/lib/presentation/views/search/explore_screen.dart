@@ -12,7 +12,7 @@ class ExploreScreen extends StatelessWidget {
       extendBody: true,
       body: Column(
         children: [
-          // 1. HEADER WITH BACK BUTTON
+
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 50, 24, 10),
             child: Row(
@@ -33,7 +33,7 @@ class ExploreScreen extends StatelessWidget {
             ),
           ),
 
-          // 2. SEARCH BAR
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             child: Container(
@@ -55,7 +55,7 @@ class ExploreScreen extends StatelessWidget {
             ),
           ),
 
-          // 3. FACILITY LIST (Using reusable CategoryCard)
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(24),
@@ -102,7 +102,7 @@ class ExploreScreen extends StatelessWidget {
                   icon: Icons.sports_kabaddi_rounded,
                   onTap: () {},
                 ),
-                const SizedBox(height: 120), // Padding for the floating nav bar
+                const SizedBox(height: 120), 
               ],
             ),
           ),
