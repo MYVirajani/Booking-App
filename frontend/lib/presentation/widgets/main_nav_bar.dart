@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/presentation/views/bookings/bookings_screen.dart';
 import '../views/get_started/home_screen.dart';
 import '../views/search/explore_screen.dart';
 import 'custom_nav_item.dart';
@@ -72,6 +73,9 @@ class MainNavBar extends StatelessWidget {
     switch (index) {
       case 0:
         nextScreen = const HomeScreen();
+        break;
+      case 1:
+        nextScreen = const BookingsScreen();
         break;
       case 2:
         nextScreen = const ExploreScreen();
