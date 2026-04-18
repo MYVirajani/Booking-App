@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/presentation/views/bookings/bookings_screen.dart';
+import 'package:frontend/presentation/views/profile/profile_screen.dart';
 import '../views/get_started/home_screen.dart';
 import '../views/search/explore_screen.dart';
 import 'custom_nav_item.dart';
@@ -79,6 +80,9 @@ class MainNavBar extends StatelessWidget {
         break;
       case 2:
         nextScreen = const ExploreScreen();
+        break;
+      case 3:
+        nextScreen = const ProfileScreen();
         break;
 
       default:
