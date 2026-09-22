@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/presentation/views/bookings/bookings_screen.dart';
-import 'package:frontend/presentation/views/profile/profile_screen.dart';
+import '../../core/app_colors.dart';
+import '../views/bookings/bookings_screen.dart';
+import '../views/profile/profile_screen.dart';
 import '../views/get_started/home_screen.dart';
 import '../views/search/explore_screen.dart';
 import 'custom_nav_item.dart';
@@ -8,27 +9,20 @@ import 'custom_nav_item.dart';
 class MainNavBar extends StatelessWidget {
   final int currentIndex;
 
-  const MainNavBar({
-    super.key,
-    required this.currentIndex,
-  });
+  const MainNavBar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 90,
       decoration: BoxDecoration(
-        color: const Color(0xFF051C1F),
+        color: AppColors.surface,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 20,
-            spreadRadius: 5,
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, spreadRadius: 5),
         ],
       ),
       child: Row(
@@ -84,7 +78,6 @@ class MainNavBar extends StatelessWidget {
       case 3:
         nextScreen = const ProfileScreen();
         break;
-
       default:
         return;
     }
@@ -93,7 +86,7 @@ class MainNavBar extends StatelessWidget {
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) => nextScreen,
-        transitionDuration: Duration.zero, // Fast switch for nav bar
+        transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       ),
     );

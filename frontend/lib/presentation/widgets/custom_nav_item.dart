@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/app_colors.dart';
 
 class CustomNavItem extends StatelessWidget {
   final int index;
@@ -23,25 +24,23 @@ class CustomNavItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-
         color: Colors.transparent,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white38,
+              color: isSelected ? AppColors.textPrimary : AppColors.textMuted,
               size: 28,
             ),
             const SizedBox(height: 4),
-
             Opacity(
               opacity: isSelected ? 1.0 : 0.0,
               child: Container(
                 height: 4,
                 width: 4,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFB9F6CA),
+                  color: AppColors.accent,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -50,7 +49,7 @@ class CustomNavItem extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? const Color(0xFFB9F6CA) : Colors.white38,
+                color: isSelected ? AppColors.accent : AppColors.textMuted,
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
