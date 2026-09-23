@@ -1,24 +1,69 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../data/repositories/auth/auth_repository.dart';
-import '../../../domain/services/auth_service.dart';
+import '../../../core/api_client.dart';
+import '../../../services/auth_service.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  late AuthService authService;
-
   AuthBloc() : super(AuthInitial()) {
-    authService = AuthService(AuthRepository());
+    on<AuthSessionCheckRequested>(_onSessionCheckRequested);
+    on<AuthLoginRequested>(_onLoginRequested);
+    on<AuthRegisterRequested>(_onRegisterRequested);
+    on<AuthLogoutRequested>(_onLogoutRequested);
+  }
 
-    on<LoginEvent>((event, emit) async {
-      emit(AuthLoading());
+  Future<void> _onSessionCheckRequested(
+      AuthSessionCheckRequested event,
+      Emitter<AuthState> emit,
+      ) async {
+    emit(AuthLoading());
+    final loggedIn = await AuthService.isLoggedIn();
+    if (!loggedIn) {
+      emit(AuthUnauthenticated());
+      return;
+    }
+    try {
+      final user = await AuthService.getMe();
+      emit(AuthAuthenticated(user));
+    } catch (_) {
+      // saved token is invalid/expired
+      await AuthService.logout();
+      emit(AuthUnauthenticated());
+    }
+  }
 
-      try {
-        await authService.login(event.email, event.password);
-        emit(AuthSuccess());
-      } catch (e) {
-        emit(AuthFailure(e.toString()));
-      }
-    });
+  Future<void> _onLoginRequested(AuthLoginRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await AuthService.login(phone: event.phone, password: event.password);
+      final user = await AuthService.getMe();
+      emit(AuthAuthenticated(user));
+    } on ApiException catch (e) {
+      emit(AuthFailure(e.message));
+    } catch (_) {
+      emit(const AuthFailure("Couldn't reach the server. Check your connection."));
+    }
+  }
+
+  Future<void> _onRegisterRequested(AuthRegisterRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await AuthService.register(
+        name: event.name,
+        phone: event.phone,
+        password: event.password,
+        email: event.email,
+      );
+      emit(AuthRegisterSuccess());
+    } on ApiException catch (e) {
+      emit(AuthFailure(e.message));
+    } catch (_) {
+      emit(const AuthFailure("Couldn't reach the server. Check your connection."));
+    }
+  }
+
+  Future<void> _onLogoutRequested(AuthLogoutRequested event, Emitter<AuthState> emit) async {
+    await AuthService.logout();
+    emit(AuthUnauthenticated());
   }
 }
