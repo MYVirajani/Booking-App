@@ -1,114 +1,110 @@
 import 'package:flutter/material.dart';
+import '../../../core/app_colors.dart';
+import '../../../models/court.dart';
+import '../../../services/court_service.dart';
 import '../../widgets/category_card.dart';
 import '../../widgets/main_nav_bar.dart';
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
+
+  @override
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends State<ExploreScreen> {
+  late Future<List<Court>> _courtsFuture;
+  String _query = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _courtsFuture = CourtService.listCourts();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF031518),
+      backgroundColor: AppColors.background,
       extendBody: true,
-      body: Column(
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 50, 24, 10),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
-                  onPressed: () => Navigator.pop(context),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 24, 10),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary, size: 20),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const Text(
+                    "Our Facilities",
+                    style: TextStyle(color: AppColors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.cardFill.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.cardFill.withOpacity(0.08)),
                 ),
-                const Text(
-                  "Our Facilities",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
+                child: TextField(
+                  style: const TextStyle(color: AppColors.textPrimary),
+                  onChanged: (value) => setState(() => _query = value.toLowerCase()),
+                  decoration: const InputDecoration(
+                    hintText: "Search nets or courts...",
+                    hintStyle: TextStyle(color: AppColors.textMuted),
+                    prefixIcon: Icon(Icons.search, color: AppColors.accent),
+                    border: InputBorder.none,
                   ),
                 ),
-              ],
-            ),
-          ),
-
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withOpacity(0.08)),
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: "Search nets or courts...",
-                  hintStyle: TextStyle(color: Colors.white38),
-                  prefixIcon: Icon(Icons.search, color: Color(0xFFB9F6CA)),
-                  border: InputBorder.none,
-                ),
               ),
             ),
-          ),
-
-
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(24),
-              children: [
-                CategoryCard(
-                  title: "Cricket Net - Lane 01",
-                  subtitle: "Bowling machine available",
-                  price: "LKR 1,500/hr",
-                  icon: Icons.sports_cricket_rounded,
-                  onTap: () {},
-                ),
-                CategoryCard(
-                  title: "Cricket Net - Lane 02",
-                  subtitle: "Spacious practice area",
-                  price: "LKR 1,500/hr",
-                  icon: Icons.sports_cricket_outlined,
-                  onTap: () {},
-                ),
-                CategoryCard(
-                  title: "Futsal Court",
-                  subtitle: "High-grip indoor turf",
-                  price: "LKR 3,500/hr",
-                  icon: Icons.sports_soccer_rounded,
-                  onTap: () {},
-                ),
-                CategoryCard(
-                  title: "Badminton Court A",
-                  subtitle: "Professional mat surface",
-                  price: "LKR 1,200/hr",
-                  icon: Icons.sports_tennis_rounded,
-                  onTap: () {},
-                ),
-                CategoryCard(
-                  title: "Badminton Court B",
-                  subtitle: "Professional mat surface",
-                  price: "LKR 1,200/hr",
-                  icon: Icons.sports_tennis_outlined,
-                  onTap: () {},
-                ),
-                CategoryCard(
-                  title: "Table Tennis",
-                  subtitle: "Double-table zone",
-                  price: "LKR 800/hr",
-                  icon: Icons.sports_kabaddi_rounded,
-                  onTap: () {},
-                ),
-                const SizedBox(height: 120), 
-              ],
+            Expanded(
+              child: FutureBuilder<List<Court>>(
+                future: _courtsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator(color: AppColors.accent));
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Couldn't load courts.", style: TextStyle(color: AppColors.textMuted)),
+                    );
+                  }
+                  final courts = (snapshot.data ?? [])
+                      .where((c) => c.name.toLowerCase().contains(_query))
+                      .toList();
+                  if (courts.isEmpty) {
+                    return const Center(
+                      child: Text("No courts match your search.", style: TextStyle(color: AppColors.textMuted)),
+                    );
+                  }
+                  return ListView(
+                    padding: const EdgeInsets.all(24),
+                    children: [
+                      ...courts.map((court) => CategoryCard(
+                        title: court.name,
+                        subtitle: court.subtitleLabel,
+                        price: court.priceLabel,
+                        icon: court.icon,
+                          onTap: () {}
+                      )),
+                      const SizedBox(height: 120),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-
       bottomNavigationBar: const MainNavBar(currentIndex: 2),
     );
   }
